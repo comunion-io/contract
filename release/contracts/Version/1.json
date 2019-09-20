@@ -1,0 +1,208 @@
+{
+  "contractName": "Version",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "version",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"version\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/guoping/Documents/gp/proj/solidity/comunion/dao/contracts/Version.sol\":\"Version\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/guoping/Documents/gp/proj/solidity/comunion/dao/contracts/Version.sol\":{\"keccak256\":\"0x1d6531638906aa20663cb5d51ae36a2793485378550691f9cf061ec9a67bf249\",\"urls\":[\"bzz-raw://8b99b671ef07518ce1ed5b24448b99874fcc5c98320256f44019a6f79568596f\",\"dweb:/ipfs/QmSXK3NH5B4VUJPeJbaXwVZebq1gspMsuVMKKEcqbBAQRN\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50608f8061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c806354fd4d5014602d575b600080fd5b60336055565b604051808263ffffffff1663ffffffff16815260200191505060405180910390f35b60018156fea265627a7a7231582045a3be1e7ff37a0021e50f40518e6aa184cb23d256e0f0d59793368d795514c964736f6c634300050b0032",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060285760003560e01c806354fd4d5014602d575b600080fd5b60336055565b604051808263ffffffff1663ffffffff16815260200191505060405180910390f35b60018156fea265627a7a7231582045a3be1e7ff37a0021e50f40518e6aa184cb23d256e0f0d59793368d795514c964736f6c634300050b0032",
+  "sourceMap": "26:60:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:60:2;;;;;;;",
+  "deployedSourceMap": "26:60:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:60:2;;;;;;;;;;;;;;;;;;;49:34;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;82:1;49:34;:::o",
+  "source": "pragma solidity ^0.5.11;\n\ncontract Version {\n    uint32 public constant version = 1;\n}",
+  "sourcePath": "/Users/guoping/Documents/gp/proj/solidity/comunion/dao/contracts/Version.sol",
+  "ast": {
+    "absolutePath": "/Users/guoping/Documents/gp/proj/solidity/comunion/dao/contracts/Version.sol",
+    "exportedSymbols": {
+      "Version": [
+        147
+      ]
+    },
+    "id": 148,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 143,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".11"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 147,
+        "linearizedBaseContracts": [
+          147
+        ],
+        "name": "Version",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": true,
+            "id": 146,
+            "name": "version",
+            "nodeType": "VariableDeclaration",
+            "scope": 147,
+            "src": "49:34:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint32",
+              "typeString": "uint32"
+            },
+            "typeName": {
+              "id": 144,
+              "name": "uint32",
+              "nodeType": "ElementaryTypeName",
+              "src": "49:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint32",
+                "typeString": "uint32"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "31",
+              "id": 145,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "82:1:2",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_1_by_1",
+                "typeString": "int_const 1"
+              },
+              "value": "1"
+            },
+            "visibility": "public"
+          }
+        ],
+        "scope": 148,
+        "src": "26:60:2"
+      }
+    ],
+    "src": "0:86:2"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/guoping/Documents/gp/proj/solidity/comunion/dao/contracts/Version.sol",
+    "exportedSymbols": {
+      "Version": [
+        147
+      ]
+    },
+    "id": 148,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 143,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".11"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 147,
+        "linearizedBaseContracts": [
+          147
+        ],
+        "name": "Version",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": true,
+            "id": 146,
+            "name": "version",
+            "nodeType": "VariableDeclaration",
+            "scope": 147,
+            "src": "49:34:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint32",
+              "typeString": "uint32"
+            },
+            "typeName": {
+              "id": 144,
+              "name": "uint32",
+              "nodeType": "ElementaryTypeName",
+              "src": "49:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint32",
+                "typeString": "uint32"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "31",
+              "id": 145,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "82:1:2",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_1_by_1",
+                "typeString": "int_const 1"
+              },
+              "value": "1"
+            },
+            "visibility": "public"
+          }
+        ],
+        "scope": 148,
+        "src": "26:60:2"
+      }
+    ],
+    "src": "0:86:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.11+commit.c082d0b4.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.15",
+  "updatedAt": "2019-09-18T10:01:43.371Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

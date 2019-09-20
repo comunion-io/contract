@@ -1,0 +1,35 @@
+{
+  "name": "comunion-dao",
+  "version": "0.0.2",
+  "description": "comunion dao",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "typings": "src/index.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "comunion",
+    "dao",
+    "solidity",
+    "npm",
+    "typescript"
+  ],
+  "author": "guoping <guoping0001@hotmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "solc": "^0.5.11",
+    "truffle": "^5.0.35",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.6.2",
+    "web3": "^1.2.0",
+    "linq": "^3.2.0",
+    "openzeppelin-solidity": "2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.4"
+  }
+}

@@ -1,0 +1,3 @@
+    async @function(@params_def): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', '@function', [@params_list])
+    }

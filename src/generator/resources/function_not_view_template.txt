@@ -1,0 +1,3 @@
+    async gen@function_nameData(@params_def) {
+        return EthUtils.genCallData(await this._getAbi(), '@function', [@params_list])
+    }
