@@ -55,7 +55,7 @@ let deployData = Organization.genDeployData([daosAddress, orgName])
 
 - 客户端 (调用 metamask)
 ``` javascript
-var tx = {
+var tx = {
     value: '0',
     data: deployData
 }
@@ -101,7 +101,7 @@ let setMembersData = await org.genAddOrUpdateMembersData(members, roles)
 
 - 客户端 (调用 metamask)
 ``` javascript
-let tx = {
+var tx = {
     value: '0',
     to: orgAddress, // 组织合约地址
     data: setMembersData
@@ -128,7 +128,7 @@ let removeMemberData = await org.genRemoveMemberData(memberAddress)
 
 - 客户端 (调用 metamask)
 ``` javascript
-let tx = {
+var tx = {
     value: '0',
     to: orgAddress, // 组织合约地址
     data: removeMemberData
