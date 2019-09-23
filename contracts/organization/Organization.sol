@@ -41,6 +41,12 @@ contract Organization is Ownable {
         }
     }
 
+    function removeMembers(address[] memory _members) public onlyOwner {
+        for (uint16 i = 0; i < _members.length; ++i) {
+            removeMember(_members[i]);
+        }
+    }
+
     function getRole(address _addr) public view returns(bytes32) {
         require(members[_addr].hasData, "Not a member of the organization.");
         return members[_addr].role;

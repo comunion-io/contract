@@ -42,6 +42,20 @@ let ethUtils = new EthUtils(rpcHost, chainId)
 ropsten： 0x5AC87695F32a447C2D3E8b63B7495a2B5F671048  
 
 
+### 验证某组织是否已注册
+``` typescript
+// daosAddress: Daos合约地址
+let daos = new Daos(ethUtils, daosAddress)
+
+// 验证某地址 address 是否已经注册
+let addressRegistered = (await daos.addressIndex(address)) > 0
+
+// 验证某名字 name 是否已经注册
+let nameRegistered = (await daos.nameIndex(name)) > 0
+
+```
+
+
 
 ## 组织相关操作
 
@@ -84,6 +98,34 @@ let count = await ethUtils.getConfirmCount(txhash)
 ``` typescript
 let org = new Organization(ethUtils, orgContractAddress)
 ```
+
+
+### 设置token地址
+
+只有组织创建者才有权限，合约内有权限验证
+
+- 服务端生成 设置token 交易数据
+``` typescript
+let setTokenData = await org.genSetTokenData(tokenAddress)
+```
+
+- 客户端 (调用 metamask)
+``` javascript
+var tx = {
+    value: '0',
+    to: orgAddress, // 组织合约地址
+    data: setTokenData
+}
+web3.eth.sendTransaction(tx, (err, txhash) => {
+    if (!err) {
+        console.log('set token hash:', txhash)
+        // TODO 将 txhash 上传到服务端 用于验证
+    } else {
+        console.log(err)
+    }
+})
+```
+
 
 ### 添加并设置成员角色 (可批量)
 如果成员已经存在即修改成员角色； 只有组织创建者才有权限，合约内有权限验证
@@ -136,6 +178,34 @@ var tx = {
 web3.eth.sendTransaction(tx, (err, txhash) => {
     if (!err) {
         console.log('remove member hash:', txhash)
+        // TODO 将 txhash 上传到服务端 用于验证
+    } else {
+        console.log(err)
+    }
+})
+```
+
+
+### 批量删除成员 
+
+只有组织创建者才有权限，合约内有权限验证
+
+- 服务端生成 批量删除成员 交易数据
+``` typescript
+let members = [addr1, addr2]
+let removeMembersData = await org.genRemoveMembersData(members)
+```
+
+- 客户端 (调用 metamask)
+``` javascript
+var tx = {
+    value: '0',
+    to: orgAddress, // 组织合约地址
+    data: removeMembersData
+}
+web3.eth.sendTransaction(tx, (err, txhash) => {
+    if (!err) {
+        console.log('remove members hash:', txhash)
         // TODO 将 txhash 上传到服务端 用于验证
     } else {
         console.log(err)

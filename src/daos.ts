@@ -11,6 +11,7 @@ class Daos {
         return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, args)
     }
 
+
     private _ethUtils: EthUtils
     private _contractAddress: string
     private _version: number = null
@@ -19,6 +20,7 @@ class Daos {
         this._ethUtils = ethUtils
         this._contractAddress = address
     }
+
 
     async index(): Promise<any> {
         return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'index', [])
@@ -53,7 +55,7 @@ class Daos {
     private async _getVersion(): Promise<number> {
         if (this._version == null) {
             let abi = AbiManager.getAbiAndBytecode('Version').abi
-            return await this._ethUtils.call(abi, this._contractAddress, this._contractAddress, '0', 'version', [])
+            this._version = await this._ethUtils.call(abi, this._contractAddress, this._contractAddress, '0', 'version', [])
         }
         return this._version
     }
