@@ -131,12 +131,12 @@ class EthUtils {
         return c.deploy({ data: Utils.addHexHeader(d.byteCode), arguments: args }).encodeABI()
     }
 
-    static genDeployDataWithByteCode(abi, byteCode: string, args: any[]): string {
+    static genDeployDataWithByteCode(abi: any, byteCode: string, args: any[]): string {
         var c = new EthUtils.localWeb3.eth.Contract(abi)
         return c.deploy({ data: Utils.addHexHeader(byteCode), arguments: args }).encodeABI()
     }
 
-    static genCallData(abi, method: string, args: any[]): string {
+    static genCallData(abi: any, method: string, args: any[]): string {
         var c = new EthUtils.localWeb3.eth.Contract(abi)
         let f = Reflect.get(c.methods, method)
         return Reflect.apply(f, c.methods, args).encodeABI()
@@ -153,7 +153,7 @@ class EthUtils {
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcHost))
     }
 
-    async deployFile(account, filePath: string, contractName: string, args: any[]): Promise<DeployResult> {
+    async deployFile(account: any, filePath: string, contractName: string, args: any[]): Promise<DeployResult> {
         let d = EthUtils.compileFile(filePath, contractName)
         let c = new this.web3.eth.Contract(d.abi)
         let data = c.deploy({ data: Utils.addHexHeader(d.byteCode), arguments: args }).encodeABI()
@@ -166,7 +166,14 @@ class EthUtils {
         return r
     }
 
-    async execute(abi: any, contractAddress: string, account, value: string, method: string, args: any[]): Promise<any> {
+    async deployByteCode(abi: any, byteCode: string, account: any, contractAddress: string, args: any[]): Promise<any> {
+        var c = new EthUtils.localWeb3.eth.Contract(abi, contractAddress)
+        let data = c.deploy({ data: Utils.addHexHeader(byteCode), arguments: args }).encodeABI()
+        let sData = await this.signData(account, contractAddress, '0', data)
+        return await this.sendTransaction(sData)
+    }
+
+    async sendCall(abi: any, contractAddress: string, account, value: string, method: string, args: any[]): Promise<any> {
         var c = new this.web3.eth.Contract(abi, contractAddress)
         let f = Reflect.get(c.methods, method)
         let t = Reflect.apply(f, c.methods, args)
@@ -175,7 +182,7 @@ class EthUtils {
         return await this.sendTransaction(sData)
     }
 
-    async call(abi, contractAddress: string, from: string, value: string, method: string, args: any[]): Promise<any> {
+    async call(abi: any, contractAddress: string, from: string, value: string, method: string, args: any[]): Promise<any> {
         var c = new this.web3.eth.Contract(abi, contractAddress)
         let f = Reflect.get(c.methods, method)
         let t = Reflect.apply(f, c.methods, args)
@@ -189,7 +196,7 @@ class EthUtils {
         })
     }
 
-    async signData(account, to: string, value: string, data: string): Promise<string> {
+    async signData(account: any, to: string, value: string, data: string): Promise<string> {
         if (!value) {
             value = '0'
         }
@@ -217,6 +224,11 @@ class EthUtils {
                 resolve(d.rawTransaction)
             })
         })
+    }
+
+    async signAndSend(account: any, to: string, value: string, data: string): Promise<TxResult> {
+        let d = await this.signData(account, to, value, data);
+        return await this.sendTransaction(d)
     }
 
     async sendTransaction(signData: string): Promise<TxResult> {

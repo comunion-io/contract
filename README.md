@@ -61,35 +61,22 @@ let nameRegistered = (await daos.nameIndex(name)) > 0
 
 ### 发布组织
 
-- 服务端生成 deploy 数据
+- 服务端生成 deploy 数据, 并发布
 ``` typescript
 // daosAddress: Daos 合约地址,  orgName: 组织名称, owner: 组织拥有者地址
 let deployData = Organization.genDeployData(daosAddress, orgName, owner)
+// account: 为签名账号(主要负责支付gas)
+let account = ethUtils.web3.eth.accounts.privateKeyToAccount('<私钥的16进制字符串>')
+/**
+ *  通过 result.hash 获取交易 hash; result.data 获取交易相关信息
+ */
+let result = await ethUtils.signAndSend(account, null, '0', deployData)
 ```
 
-- 客户端 (调用 metamask)
-``` javascript
-var tx = {
-    value: '0',
-    data: deployData
-}
-web3.eth.sendTransaction(tx, (err, txhash) => {
-    if (!err) {
-        console.log('deploy organization hash:', txhash)
-        // TODO 将 txhash 上传到服务端用于验证
-    } else {
-        console.log(err)
-    }
-})
-```
-
-- 服务端查询交易状态
+- 查询交易状态
 ``` typescript
-// 查询交易结果
+// 查询交易结果 result.status 为 true 表示交易成功， result.contractAddress 为 发布的合约地址
 let result = await ethUtils.getTransactionReceipt(txhash)
-// result.status 为 true 表示交易成功， result.contractAddress 为 发布的合约地址
-
-
 // 查询交易区块确认数
 let count = await ethUtils.getConfirmCount(txhash)
 ```
