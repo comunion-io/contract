@@ -63,8 +63,8 @@ let nameRegistered = (await daos.nameIndex(name)) > 0
 
 - 服务端生成 deploy 数据
 ``` typescript
-// daosAddress: Daos 合约地址,  orgName: 组织名称
-let deployData = Organization.genDeployData([daosAddress, orgName])
+// daosAddress: Daos 合约地址,  orgName: 组织名称, owner: 组织拥有者地址
+let deployData = Organization.genDeployData(daosAddress, orgName, owner)
 ```
 
 - 客户端 (调用 metamask)
