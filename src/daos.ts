@@ -3,12 +3,9 @@ import AbiManager from './utils/abi_manager'
 
 class Daos {
 
-    static genDeployData(args?: any[], version?: number) {
-        if (!args) {
-            args = []
-        }
+    static genDeployData(version?: number) {
         let abiAndBytecode = AbiManager.getAbiAndBytecode('Daos', version)
-        return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, args)
+        return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, [])
     }
 
 

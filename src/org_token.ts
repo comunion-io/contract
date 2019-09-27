@@ -3,12 +3,9 @@ import AbiManager from './utils/abi_manager'
 
 class OrgToken {
 
-    static genDeployData(args?: any[], version?: number) {
-        if (!args) {
-            args = []
-        }
+    static genDeployData(_org: string, _name: string, _symbol: string, _totalSupply: string, _owner: string, version?: number) {
         let abiAndBytecode = AbiManager.getAbiAndBytecode('OrgToken', version)
-        return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, args)
+        return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, [_org, _name, _symbol, _totalSupply, _owner])
     }
 
 
@@ -84,6 +81,10 @@ class OrgToken {
 
     async genTransferOwnershipData(newOwner: string) {
         return EthUtils.genCallData(await this._getAbi(), 'transferOwnership', [newOwner])
+    }
+
+    async undefined(_org: string, _name: string, _symbol: string, _totalSupply: string, _owner: string): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'undefined', [_org, _name, _symbol, _totalSupply, _owner])
     }
 
     async genMintData(_to: string, _amount: string) {

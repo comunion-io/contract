@@ -13,10 +13,11 @@ contract OrgToken is ERC20, Ownable {
     uint8 public constant decimals = 18;
     uint32 public constant version = 1;
 
-    constructor(Organization _org, string memory _name, string memory _symbol, uint256 _totalSupply) public {
+    constructor(Organization _org, string memory _name, string memory _symbol, uint256 _totalSupply, address _owner) public {
         name = _name;
         symbol = _symbol;
-        _mint(msg.sender, _totalSupply);
+        transferOwnership(_owner);
+        _mint(_owner, _totalSupply);
         _org.setToken(this);
     }
 

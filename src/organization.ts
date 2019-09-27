@@ -3,12 +3,9 @@ import AbiManager from './utils/abi_manager'
 
 class Organization {
 
-    static genDeployData(args?: any[], version?: number) {
-        if (!args) {
-            args = []
-        }
+    static genDeployData(_daos: string, _name: string, _owner: string, version?: number) {
         let abiAndBytecode = AbiManager.getAbiAndBytecode('Organization', version)
-        return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, args)
+        return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, [_daos, _name, _owner])
     }
 
 
@@ -52,6 +49,10 @@ class Organization {
 
     async token(): Promise<any> {
         return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'token', [])
+    }
+
+    async undefined(_daos: string, _name: string, _owner: string): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'undefined', [_daos, _name, _owner])
     }
 
     async genSetTokenData(_token: string) {
