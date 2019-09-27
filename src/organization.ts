@@ -66,6 +66,10 @@ class Organization {
         return EthUtils.genCallData(await this._getAbi(), 'removeMember', [_addr])
     }
 
+    async genRemoveMembersData(_members: string[]) {
+        return EthUtils.genCallData(await this._getAbi(), 'removeMembers', [_members])
+    }
+
     async getRole(_addr: string): Promise<any> {
         return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'getRole', [_addr])
     }

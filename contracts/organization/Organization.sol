@@ -18,8 +18,9 @@ contract Organization is Ownable {
     ERC20 public token;
     mapping(address => Member) public members;
 
-    constructor(Daos _daos, string memory _name) public {
+    constructor(Daos _daos, string memory _name, address _owner) public {
         name = _name;
+        transferOwnership(_owner);
         _daos.register(address(this), _name);
     }
 

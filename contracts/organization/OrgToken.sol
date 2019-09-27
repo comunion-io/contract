@@ -24,4 +24,12 @@ contract OrgToken is ERC20, Ownable {
         _mint(_to, _amount);
         return true;
     }
+
+    function transfers(address[] memory recipients, uint256[] memory amounts) public returns (bool) {
+        require(recipients.length == amounts.length, "params error.");
+        for (uint32 i = 0; i < recipients.length; ++i) {
+            transfer(recipients[i], amounts[i]);
+        }
+        return true;
+    }
 }

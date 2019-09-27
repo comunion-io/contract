@@ -90,6 +90,10 @@ class OrgToken {
         return EthUtils.genCallData(await this._getAbi(), 'mint', [_to, _amount])
     }
 
+    async genTransfersData(recipients: string[], amounts: string[]) {
+        return EthUtils.genCallData(await this._getAbi(), 'transfers', [recipients, amounts])
+    }
+
 
     private async _getAbi(): Promise<any> {
         let version = await this._getVersion()
