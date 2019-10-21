@@ -214,7 +214,7 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 
 - 服务端生成 deploy 数据
 ``` typescript
-// orgAddress: 组织合约地址,  name: 名称,  symbol: 简称, totalSupply: 初始发行量
+// orgAddress: 组织合约地址,  name: 名称,  symbol: 简称, totalSupply: 初始发行量(单位wei, 数值应该为 发行个数 * decimals)
 let deployData = OrgToken.genDeployData(orgAddress, name, symbol, totalSupply)
 ```
 
