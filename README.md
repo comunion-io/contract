@@ -59,26 +59,30 @@ let nameRegistered = (await daos.nameIndex(name)) > 0
 
 ## 组织相关操作
 
+文档只只列出了部分方法，api中有全量方法，可以参考类Organization.
+
 ### 发布组织
 
-- 服务端生成 deploy 数据, 并发布
+- 服务端生成 deploy 数据
 ``` typescript
-// daosAddress: Daos 合约地址,  orgName: 组织名称, owner: 组织拥有者地址
-let deployData = Organization.genDeployData(daosAddress, orgName, owner)
-// account: 为签名账号(主要负责支付gas)
-let account = ethUtils.web3.eth.accounts.privateKeyToAccount('<私钥的16进制字符串>')
-/**
- *  通过 result.hash 获取交易 hash; result.data 获取交易相关信息
- */
-let result = await ethUtils.signAndSend(account, null, '0', deployData)
+// daosAddress: Daos 合约地址,  orgName: 组织名称
+let deployData = Organization.genDeployData(daosAddress, orgName)
 ```
 
-- 查询交易状态
-``` typescript
-// 查询交易结果 result.status 为 true 表示交易成功， result.contractAddress 为 发布的合约地址
-let result = await ethUtils.getTransactionReceipt(txhash)
-// 查询交易区块确认数
-let count = await ethUtils.getConfirmCount(txhash)
+- 客户端 (调用 metamask)
+``` javascript
+var tx = {
+    value: '0',
+    data: deployData
+}
+web3.eth.sendTransaction(tx, (err, txhash) => {
+    if (!err) {
+        console.log('deploy organization hash:', txhash)
+        // TODO 将 txhash 上传到服务端 用于验证
+    } else {
+        console.log(err)
+    }
+})
 ```
 
 ### 实例化组织对象 (服务端)
@@ -87,9 +91,10 @@ let org = new Organization(ethUtils, orgContractAddress)
 ```
 
 
-### 设置token地址
+### 设置token地址 (只能操作一次)
 
-只有组织创建者才有权限，合约内有权限验证
+只有组织创建者才有权限，合约内有权限验证.  
+通过comunion平台发布token时，token合约会自动调用此方法，不需要再单独调用
 
 - 服务端生成 设置token 交易数据
 ``` typescript
@@ -203,4 +208,74 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 
 ## OrgToken 相关
 
-待续...
+文档只只列出了部分重要方法，api中有全量方法，可以参考类OrgToken.
+
+### 发布Token
+
+- 服务端生成 deploy 数据
+``` typescript
+// orgAddress: 组织合约地址,  name: 名称,  symbol: 简称, totalSupply: 初始发行量
+let deployData = OrgToken.genDeployData(orgAddress, name, symbol, totalSupply)
+```
+
+- 客户端 (调用 metamask)
+``` javascript
+var tx = {
+    value: '0',
+    data: deployData
+}
+web3.eth.sendTransaction(tx, (err, txhash) => {
+    if (!err) {
+        console.log('deploy token hash:', txhash)
+        // TODO 将 txhash 上传到服务端 用于验证
+    } else {
+        console.log(err)
+    }
+})
+```
+
+### 实例化OrgToken对象 (服务端)
+``` typescript
+let token = new OrgToken(ethUtils, orgTokenAddress)
+```
+
+
+### 批量转账
+
+- 服务端生成转账数据
+``` typescript
+// 需要转账的账号列表
+let accounts = [addr1, addr2, addr3]
+// 需要转账的金额 (单位为wei, 取值应该是 数量*decimals)
+let amounts = ['10000000000000', '20000000000000', '30000000000000']
+// accounts 与 amounts 需要按顺序一一对应
+let tansferData = token.genTransferExtData(accounts, ammounts)
+```
+
+- 客户端 (调用 metamask)
+``` javascript
+var tx = {
+    value: '0',
+    to: orgTokenAddress, // OrgToken合约地址
+    data: tansferData
+}
+web3.eth.sendTransaction(tx, (err, txhash) => {
+    if (!err) {
+        console.log('transferExt hash:', txhash)
+        // TODO 将 txhash 上传到服务端 用于验证
+    } else {
+        console.log(err)
+    }
+})
+```
+
+## 其他
+
+- 查询交易状态 (服务端)
+``` typescript
+// 查询交易结果 result.status 为 true 表示交易成功， result.contractAddress 为 发布的合约地址
+let result = await ethUtils.getTransactionReceipt(txhash)
+
+// 查询交易区块确认数
+let count = await ethUtils.getConfirmCount(txhash)
+```

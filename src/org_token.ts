@@ -3,9 +3,9 @@ import AbiManager from './utils/abi_manager'
 
 class OrgToken {
 
-    static genDeployData(_org: string, _name: string, _symbol: string, _totalSupply: string, _owner: string, version?: number) {
+    static genDeployData(_org: string, _name: string, _symbol: string, _totalSupply: string, version?: number) {
         let abiAndBytecode = AbiManager.getAbiAndBytecode('OrgToken', version)
-        return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, [_org, _name, _symbol, _totalSupply, _owner])
+        return EthUtils.genDeployDataWithByteCode(abiAndBytecode.abi, abiAndBytecode.bytecode, [_org, _name, _symbol, _totalSupply])
     }
 
 
@@ -83,16 +83,16 @@ class OrgToken {
         return EthUtils.genCallData(await this._getAbi(), 'transferOwnership', [newOwner])
     }
 
-    async undefined(_org: string, _name: string, _symbol: string, _totalSupply: string, _owner: string): Promise<any> {
-        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'undefined', [_org, _name, _symbol, _totalSupply, _owner])
+    async undefined(_org: string, _name: string, _symbol: string, _totalSupply: string): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'undefined', [_org, _name, _symbol, _totalSupply])
     }
 
     async genMintData(_to: string, _amount: string) {
         return EthUtils.genCallData(await this._getAbi(), 'mint', [_to, _amount])
     }
 
-    async genTransfersData(recipients: string[], amounts: string[]) {
-        return EthUtils.genCallData(await this._getAbi(), 'transfers', [recipients, amounts])
+    async genTransferExtData(recipients: string[], amounts: string[]) {
+        return EthUtils.genCallData(await this._getAbi(), 'transferExt', [recipients, amounts])
     }
 
 

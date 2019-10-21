@@ -18,18 +18,18 @@ contract Organization is Ownable {
     ERC20 public token;
     mapping(address => Member) public members;
 
-    constructor(Daos _daos, string memory _name, address _owner) public {
+    constructor(Daos _daos, string memory _name) public {
         name = _name;
-        transferOwnership(_owner);
         _daos.register(address(this), _name);
     }
 
-    function setToken(ERC20 _token) public onlyOwner {
+    function setToken(ERC20 _token) public onlyManager {
+        require(address(token) == address(0), "Organization: Token has been set.");
         token = _token;
     }
 
     function addOrUpdateMembers(address[] memory addresses, bytes32[] memory roles) public onlyOwner {
-        require(addresses.length == roles.length, "params error.");
+        require(addresses.length == roles.length, "Organization: addOrUpdateMembers params error.");
         for (uint16 i = 0; i < addresses.length; ++i) {
             members[addresses[i]].hasData = true;
             members[addresses[i]].role = roles[i];
@@ -49,7 +49,12 @@ contract Organization is Ownable {
     }
 
     function getRole(address _addr) public view returns(bytes32) {
-        require(members[_addr].hasData, "Not a member of the organization.");
+        require(members[_addr].hasData, "Organization: Not a member of the organization.");
         return members[_addr].role;
+    }
+
+    modifier onlyManager() {
+        require(tx.origin == owner(), "Organization: tx.origin is not the owner");
+        _;
     }
 }

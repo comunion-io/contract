@@ -13,11 +13,10 @@ contract OrgToken is ERC20, Ownable {
     uint8 public constant decimals = 18;
     uint32 public constant version = 1;
 
-    constructor(Organization _org, string memory _name, string memory _symbol, uint256 _totalSupply, address _owner) public {
+    constructor(Organization _org, string memory _name, string memory _symbol, uint256 _totalSupply) public {
         name = _name;
         symbol = _symbol;
-        transferOwnership(_owner);
-        _mint(_owner, _totalSupply);
+        _mint(msg.sender, _totalSupply);
         _org.setToken(this);
     }
 
@@ -26,7 +25,7 @@ contract OrgToken is ERC20, Ownable {
         return true;
     }
 
-    function transfers(address[] memory recipients, uint256[] memory amounts) public returns (bool) {
+    function transferExt(address[] memory recipients, uint256[] memory amounts) public returns (bool) {
         require(recipients.length == amounts.length, "params error.");
         for (uint32 i = 0; i < recipients.length; ++i) {
             transfer(recipients[i], amounts[i]);
