@@ -1,6 +1,9 @@
 pragma solidity ^0.5.11;
 
+
 contract Daos {
+
+    event RegDao(address addr, string name);
 
     struct Dao {
         address addr;
@@ -22,6 +25,8 @@ contract Daos {
         daos[index] = Dao(_addr, _name);
         addressIndex[_addr] = index;
         nameIndex[_name] = index;
+
+        emit RegDao(_addr, _name);
 
         index += 1;
     }
