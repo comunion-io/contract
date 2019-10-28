@@ -1,6 +1,5 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import * as Web3 from 'web3'
 import Utils from './utils/utils'
 import { EthUtils, AbiManager, Daos, Organization, OrgToken } from '../../src/index'
 
@@ -22,6 +21,8 @@ async function printHashState(txhash: string) {
 }
 
 async function main() {
+    console.log(ethUtils.web3.eth.accounts)
+
     // let daosData = Daos.genDeployData([])
     // fs.writeFileSync(path.join(__dirname, 'd.txt'), daosData)
 

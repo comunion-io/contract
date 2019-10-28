@@ -29,8 +29,8 @@ npm install comunion-dao
 ``` typescript
 import { EthUtils, Daos, Organization, OrgToken } from 'comunion-dao'
 
-// rpcHost: 以太坊rpc请求地址， chainId: rpcHost对应的链Id
-let ethUtils = new EthUtils(rpcHost, chainId)
+// rpcHost: 以太坊rpc请求地址
+let ethUtils = new EthUtils(rpcHost)
 ```
 
 

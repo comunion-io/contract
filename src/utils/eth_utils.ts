@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import * as solc from 'solc'
-import * as Web3 from 'web3'
+import solc from 'solc'
+import Web3 from 'web3'
 
 
 class CompileResult {
@@ -60,7 +60,7 @@ class Utils {
 
 class EthUtils {
 
-    static localWeb3 = new Web3()
+    static localWeb3 = new Web3(null)
 
     private static findImports(importPath: string, sourcePath: string) {
         try {
@@ -143,12 +143,11 @@ class EthUtils {
     }
 
 
-    chainId: string
+    chainId: number = null
     web3: Web3
     rpcHost: string
 
-    constructor(rpcHost: string, chainId: string) {
-        this.chainId = chainId
+    constructor(rpcHost: string) {
         this.rpcHost = rpcHost
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcHost))
     }
@@ -192,7 +191,7 @@ class EthUtils {
             value: value,
             gasPrice: '1000000000',
             gas: 400000,
-            chainId: this.chainId
+            chainId: await this.getChainId()
         })
     }
 
@@ -200,38 +199,31 @@ class EthUtils {
         if (!value) {
             value = '0'
         }
-        return new Promise((resolve) => {
-            let self = this
-            this.web3.eth.getTransactionCount(account.address, async function (error, result) {
-                if (error) {
-                    throw error;
-                }
-                var rawTx = {
-                    nonce: result,
-                    from: account.address,
-                    value: value,
-                    gasPrice: '1000000000',
-                    gas: 400000,
-                    chainId: this.chainId
-                }
-                if (to) {
-                    rawTx['to'] = to
-                }
-                if (data) {
-                    rawTx['data'] = Utils.addHexHeader(data)
-                }
-                let d = await self.web3.eth.accounts.signTransaction(rawTx, account.privateKey)
-                resolve(d.rawTransaction)
-            })
-        })
+        let self = this
+        var rawTx = {
+            nonce: await this.web3.eth.getTransactionCount(account.address),
+            from: account.address,
+            value: value,
+            gasPrice: '1000000000',
+            gas: 400000,
+            chainId: await this.getChainId()
+        }
+        if (to) {
+            rawTx['to'] = to
+        }
+        if (data) {
+            rawTx['data'] = Utils.addHexHeader(data)
+        }
+        let d = await self.web3.eth.accounts.signTransaction(rawTx, account.privateKey)
+        return d.rawTransaction
     }
 
-    async signAndSend(account: any, to: string, value: string, data: string): Promise<TxResult> {
+    async signAndSend(account: any, to: string, value: string, data: string): Promise<any> {
         let d = await this.signData(account, to, value, data);
         return await this.sendTransaction(d)
     }
 
-    async sendTransaction(signData: string): Promise<TxResult> {
+    async sendTransaction(signData: string): Promise<any> {
         return await this.web3.eth.sendSignedTransaction(signData)
     }
 
@@ -251,6 +243,13 @@ class EthUtils {
 
     async getBalance(address) {
         return await this.web3.eth.getBalance(address)
+    }
+
+    async getChainId():Promise<number> {
+        if (this.chainId == null) {
+            this.chainId = await this.web3.eth.getChainId()
+        }
+        return this.chainId
     }
 
 }
