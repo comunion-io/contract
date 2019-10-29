@@ -205,7 +205,7 @@ class EthUtils {
             from: account.address,
             value: value,
             gasPrice: '1000000000',
-            gas: 400000,
+            gas: 4000000,
             chainId: await this.getChainId()
         }
         if (to) {

@@ -39,7 +39,7 @@ let ethUtils = new EthUtils(rpcHost)
 
 手动发布即可 (Daos.sol)  
 现在已经发布了一个用于测试  
-ropsten： 0x5AC87695F32a447C2D3E8b63B7495a2B5F671048  
+ropsten： 0x7284C823ea3AD29bEDfd09Ede1107981E9519896  
 
 
 ### 验证某组织是否已注册
