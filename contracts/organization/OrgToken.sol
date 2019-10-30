@@ -26,9 +26,25 @@ contract OrgToken is ERC20, Ownable {
     }
 
     function transferExt(address[] memory recipients, uint256[] memory amounts) public returns (bool) {
-        require(recipients.length == amounts.length, "params error.");
+        require(recipients.length == amounts.length, "OrgToken: transferExt params error.");
         for (uint32 i = 0; i < recipients.length; ++i) {
             transfer(recipients[i], amounts[i]);
+        }
+        return true;
+    }
+
+    function approveExt(address[] memory spenders, uint256[] memory values) public returns (bool) {
+        require(spenders.length == values.length, "OrgToken: approveExt params error.");
+        for (uint32 i = 0; i < spenders.length; ++i) {
+            approve(spenders[i], values[i]);
+        }
+        return true;
+    }
+
+    function transferFromExt(address sender, address[] memory recipients, uint256[] memory amounts) public returns (bool) {
+        require(recipients.length == amounts.length, "OrgToken: transferFromExt params error.");
+        for (uint32 i = 0; i < recipients.length; ++i) {
+            transferFrom(sender, recipients[i], amounts[i]);
         }
         return true;
     }

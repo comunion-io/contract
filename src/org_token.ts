@@ -95,6 +95,14 @@ class OrgToken {
         return EthUtils.genCallData(await this._getAbi(), 'transferExt', [recipients, amounts])
     }
 
+    async genApproveExtData(spenders: string[], values: string[]) {
+        return EthUtils.genCallData(await this._getAbi(), 'approveExt', [spenders, values])
+    }
+
+    async genTransferFromExtData(sender: string, recipients: string[], amounts: string[]) {
+        return EthUtils.genCallData(await this._getAbi(), 'transferFromExt', [sender, recipients, amounts])
+    }
+
 
     private async _getAbi(): Promise<any> {
         let version = await this._getVersion()

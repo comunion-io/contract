@@ -1,6 +1,6 @@
 {
   "name": "comunion-dao",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "comunion dao",
   "main": "dist/index.js",
   "types": "src/index.ts",
@@ -21,6 +21,7 @@
   "author": "guoping <guoping0001@hotmail.com>",
   "license": "ISC",
   "dependencies": {
+    "bignumber.js": "^9.0.0",
     "linq": "^3.2.0",
     "openzeppelin-solidity": "2.3.0",
     "solc": "^0.5.11",
@@ -30,6 +31,7 @@
     "web3": "^1.2.2"
   },
   "devDependencies": {
+    "@types/bignumber.js": "^5.0.0",
     "@types/node": "^12.7.4",
     "@types/web3": "^1.0.20"
   }

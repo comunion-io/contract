@@ -9,6 +9,8 @@ contract Organization is Ownable {
 
     event SetMemberRole(address member, bytes32 role);
     event RemoveMember(address member);
+    event SetSubAccount(address account, bytes32 desc);
+    event RemoveSubAccount(address account);
     event SetToken(address token);
 
     struct Member {
@@ -16,10 +18,16 @@ contract Organization is Ownable {
         bool hasData;
     }
 
+    struct SubAccount {
+        bytes32 desc;
+        bool hasData;
+    }
+
     uint32 public constant version = 1;
     string public name;
     ERC20 public token;
     mapping(address => Member) public members;
+    mapping(address => SubAccount) public subAccounts;
 
     constructor(Daos _daos, string memory _name) public {
         name = _name;
@@ -47,26 +55,53 @@ contract Organization is Ownable {
         }
     }
 
-    function removeMember(address _addr) public onlyOwner {
-        if (members[_addr].hasData) {
-            delete members[_addr];
-            emit RemoveMember(_addr);
-        }
-    }
-
     function removeMembers(address[] memory _members) public onlyOwner {
         for (uint16 i = 0; i < _members.length; ++i) {
-            removeMember(_members[i]);
+            _removeMember(_members[i]);
         }
     }
 
-    function getRole(address _addr) public view returns(bytes32) {
-        require(members[_addr].hasData, "Organization: Not a member of the organization.");
-        return members[_addr].role;
+    function getRole(address member) public view returns(bytes32) {
+        require(members[member].hasData, "Organization: Not a member of the organization.");
+        return members[member].role;
+    }
+
+    function addOrUpdateSubAccounts(address[] memory accounts, bytes32[] memory descs) public onlyOwner {
+        require(accounts.length == descs.length, "Organization: addOrUpdateSubAccounts params error.");
+        for (uint16 i = 0; i < accounts.length; ++i) {
+            subAccounts[accounts[i]].hasData = true;
+            subAccounts[accounts[i]].desc = descs[i];
+            emit SetSubAccount(accounts[i], descs[i]);
+        }
+    }
+
+    function removeSubAccounts(address[] memory accounts) public onlyOwner {
+        for (uint16 i = 0; i < accounts.length; ++i) {
+            _removeSubAccount(accounts[i]);
+        }
+    }
+
+    function getSubAccountDesc(address account) public view returns(bytes32) {
+        require(subAccounts[account].hasData, "Organization: account is not a sub-account.");
+        return subAccounts[account].desc;
     }
 
     modifier onlyManager() {
         require(tx.origin == owner(), "Organization: tx.origin is not the owner");
         _;
+    }
+
+    function _removeMember(address member) public onlyOwner {
+        if (members[member].hasData) {
+            delete members[member];
+            emit RemoveMember(member);
+        }
+    }
+
+    function _removeSubAccount(address account) public onlyOwner {
+        if (members[account].hasData) {
+            delete subAccounts[account];
+            emit RemoveSubAccount(account);
+        }
     }
 }

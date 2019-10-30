@@ -189,8 +189,8 @@ class EthUtils {
             nonce: 0,
             from: from,
             value: value,
-            gasPrice: '1000000000',
-            gas: 400000,
+            gasPrice: '1500000000',
+            gas: 8000000,
             chainId: await this.getChainId()
         })
     }
@@ -204,8 +204,8 @@ class EthUtils {
             nonce: await this.web3.eth.getTransactionCount(account.address),
             from: account.address,
             value: value,
-            gasPrice: '1000000000',
-            gas: 4000000,
+            gasPrice: '1500000000',
+            gas: 8000000,
             chainId: await this.getChainId()
         }
         if (to) {

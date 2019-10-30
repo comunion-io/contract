@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import BigNumber from 'bignumber.js'
 import Utils from './utils/utils'
 import { EthUtils, AbiManager, Daos, Organization, OrgToken } from '../../src/index'
 
@@ -24,14 +25,14 @@ async function deployDaos() {
     console.log('daos deploy result:\n' + JSON.stringify(r, null, 2))
 }
 
-async function deployOrg(daosAddress: string) {
-    let data = Organization.genDeployData(daosAddress, 'my organization')
+async function deployOrg(daosAddress: string, name: string) {
+    let data = Organization.genDeployData(daosAddress, name)
     let r = await ethUtils.signAndSend(account, null, '0', data)
     console.log('organization deploy result:\n' + JSON.stringify(r, null, 2))
 }
 
-async function deployToken(orgAddress: string) {
-    let data = OrgToken.genDeployData(orgAddress, 'my token', 'MT', '100000000000000000000')
+async function deployToken(orgAddress: string, name: string, symbol: string, totalSupply: string) {
+    let data = OrgToken.genDeployData(orgAddress, name, symbol, new BigNumber(totalSupply).times(new BigNumber(10).pow(18)).toString(10))
     let r = await ethUtils.signAndSend(account, null, '0', data)
     console.log('token deploy result:\n' + JSON.stringify(r, null, 2))
 }
@@ -43,13 +44,20 @@ async function setMember(orgAddress: string, member: string, role: string) {
     console.log('set member result:', JSON.stringify(r, null, 2))
 }
 
+async function daosTest() {
+    let daos = new Daos(ethUtils, '0x7284C823ea3AD29bEDfd09Ede1107981E9519896')
+    console.log('index:', await daos.nameIndex('MyOrg'))
+}
+
+
 async function main() {
 
-    await deployDaos()
-    // console.log(await daos.nameIndex('MyOrg1'))
+    // await deployDaos()
+    await deployOrg('0x7284C823ea3AD29bEDfd09Ede1107981E9519896', 'MyOrg1')
+    // await deployToken('0x70b69212a6a8124c77be2eb8db41c3dd410712cc', 'MyToken', 'MT', '100000000')
 
+    // daosTest()
     // console.log(ethUtils.web3.utils.hexToAscii(await org.getRole('0x7a3e6557ec2b49814115b33362025230ca326a7b')))
-
 }
 
 main()

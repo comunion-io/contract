@@ -43,6 +43,10 @@ class Organization {
         return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'isOwner', [])
     }
 
+    async subAccounts(arg0: string): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'subAccounts', [arg0])
+    }
+
     async genTransferOwnershipData(newOwner: string) {
         return EthUtils.genCallData(await this._getAbi(), 'transferOwnership', [newOwner])
     }
@@ -63,16 +67,32 @@ class Organization {
         return EthUtils.genCallData(await this._getAbi(), 'addOrUpdateMembers', [addresses, roles])
     }
 
-    async genRemoveMemberData(_addr: string) {
-        return EthUtils.genCallData(await this._getAbi(), 'removeMember', [_addr])
-    }
-
     async genRemoveMembersData(_members: string[]) {
         return EthUtils.genCallData(await this._getAbi(), 'removeMembers', [_members])
     }
 
-    async getRole(_addr: string): Promise<any> {
-        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'getRole', [_addr])
+    async getRole(member: string): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'getRole', [member])
+    }
+
+    async genAddOrUpdateSubAccountsData(accounts: string[], descs: string[]) {
+        return EthUtils.genCallData(await this._getAbi(), 'addOrUpdateSubAccounts', [accounts, descs])
+    }
+
+    async genRemoveSubAccountsData(accounts: string[]) {
+        return EthUtils.genCallData(await this._getAbi(), 'removeSubAccounts', [accounts])
+    }
+
+    async getSubAccountDesc(account: string): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'getSubAccountDesc', [account])
+    }
+
+    async gen_removeMemberData(member: string) {
+        return EthUtils.genCallData(await this._getAbi(), '_removeMember', [member])
+    }
+
+    async gen_removeSubAccountData(account: string) {
+        return EthUtils.genCallData(await this._getAbi(), '_removeSubAccount', [account])
     }
 
 
