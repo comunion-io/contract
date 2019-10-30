@@ -125,8 +125,8 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 - 服务端生成 添加成员角色 数据
 ``` typescript
 // role 字符串长度不能超过32字节
-let role1 = ethUtils.web3.utils.fromAscii("R1")
-let role2 = ethUtils.web3.utils.fromAscii("R2")
+let role1 = ethUtils.web3.utils.fromUtf8("R1")
+let role2 = ethUtils.web3.utils.fromUtf8("R2")
 // members 与 roles 按顺序一一对应
 let members = [addr1, addr2, addr3]
 let roles = [role1, role1, role2]

@@ -53,8 +53,8 @@ async function daosTest() {
 async function main() {
 
     // await deployDaos()
-    await deployOrg('0x7284C823ea3AD29bEDfd09Ede1107981E9519896', 'MyOrg1')
-    // await deployToken('0x70b69212a6a8124c77be2eb8db41c3dd410712cc', 'MyToken', 'MT', '100000000')
+    // await deployOrg('0x7284C823ea3AD29bEDfd09Ede1107981E9519896', 'MyOrg2')
+    await deployToken('0xe02167BfdF7c1a7Eef1184de1be4EA8C245b2050', 'MyToken', 'MT', '100000000')
 
     // daosTest()
     // console.log(ethUtils.web3.utils.hexToAscii(await org.getRole('0x7a3e6557ec2b49814115b33362025230ca326a7b')))
