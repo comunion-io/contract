@@ -58,6 +58,7 @@ class Utils {
     }
 }
 
+
 class EthUtils {
 
     static localWeb3 = new Web3(null)

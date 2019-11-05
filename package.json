@@ -1,6 +1,6 @@
 {
   "name": "comunion-dao",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "comunion dao",
   "main": "dist/index.js",
   "types": "src/index.ts",

@@ -9,8 +9,6 @@ contract Organization is Ownable {
 
     event SetMemberRole(address member, bytes32 role);
     event RemoveMember(address member);
-    event SetSubAccount(address account, bytes32 desc);
-    event RemoveSubAccount(address account);
     event SetToken(address token);
 
     struct Member {
@@ -66,26 +64,6 @@ contract Organization is Ownable {
         return members[member].role;
     }
 
-    function addOrUpdateSubAccounts(address[] memory accounts, bytes32[] memory descs) public onlyOwner {
-        require(accounts.length == descs.length, "Organization: addOrUpdateSubAccounts params error.");
-        for (uint16 i = 0; i < accounts.length; ++i) {
-            subAccounts[accounts[i]].hasData = true;
-            subAccounts[accounts[i]].desc = descs[i];
-            emit SetSubAccount(accounts[i], descs[i]);
-        }
-    }
-
-    function removeSubAccounts(address[] memory accounts) public onlyOwner {
-        for (uint16 i = 0; i < accounts.length; ++i) {
-            _removeSubAccount(accounts[i]);
-        }
-    }
-
-    function getSubAccountDesc(address account) public view returns(bytes32) {
-        require(subAccounts[account].hasData, "Organization: account is not a sub-account.");
-        return subAccounts[account].desc;
-    }
-
     modifier onlyManager() {
         require(tx.origin == owner(), "Organization: tx.origin is not the owner");
         _;
@@ -98,10 +76,4 @@ contract Organization is Ownable {
         }
     }
 
-    function _removeSubAccount(address account) public onlyOwner {
-        if (members[account].hasData) {
-            delete subAccounts[account];
-            emit RemoveSubAccount(account);
-        }
-    }
 }
