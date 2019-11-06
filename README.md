@@ -172,7 +172,7 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 ### 1. 发布Token
 
 ``` typescript
-// orgAddress: 组织合约地址,  name: 名称,  symbol: 简称, totalSupply: 初始发行量(单位wei, 数值应该为 发行个数 * decimals)
+// orgAddress: 组织合约地址,  name: 名称,  symbol: 简称, totalSupply: 初始发行量(单位wei, 数值应该为 发行个数 * 10^decimals, 从平台发布的token decimals默认为18)
 let deployData = OrgToken.genDeployData(orgAddress, name, symbol, totalSupply)
 
 // 调起metamask
@@ -200,7 +200,7 @@ let token = new OrgToken(ethUtils, orgTokenAddress)
 ``` typescript
 // 需要授权的账号列表
 let spenders = [addr1, addr2, addr3]
-// 授权金额 (单位为wei, 取值应该是 数量*decimals)
+// 授权金额 (单位为wei, 取值应该是 数量 * 10^decimals, 从平台发布的token decimals默认为18)
 let values = ['10000000000000', '20000000000000', '30000000000000']
 // spenders 与 values 需要按顺序一一对应
 let approveData = await token.genApproveExtData(spenders, values)
@@ -226,7 +226,7 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 ``` typescript
 // 需要转账的账号列表
 let accounts = [addr1, addr2, addr3]
-// 需要转账的金额 (单位为wei, 取值应该是 数量*decimals)
+// 需要转账的金额 (单位为wei, 取值应该是 数量 * 10^decimals, 从平台发布的token decimals默认为18)
 let amounts = ['10000000000000', '20000000000000', '30000000000000']
 // accounts 与 amounts 需要按顺序一一对应
 let tansferData = await token.genTransferExtData(accounts, ammounts)
