@@ -52,7 +52,6 @@ let addressRegistered = (await daos.addressIndex(address)) > 0
 
 // 验证某名字 name 是否已经注册
 let nameRegistered = (await daos.nameIndex(name)) > 0
-
 ```
 
 
@@ -63,14 +62,11 @@ let nameRegistered = (await daos.nameIndex(name)) > 0
 
 ### 1. 发布组织
 
-- 服务端生成 deploy 数据
 ``` typescript
 // daosAddress: Daos 合约地址,  orgName: 组织名称
 let deployData = Organization.genDeployData(daosAddress, orgName)
-```
 
-- 客户端 (调用 metamask)
-``` javascript
+// 调起metamask
 var tx = {
     value: '0',
     data: deployData
@@ -85,7 +81,7 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 })
 ```
 
-### 2. 实例化组织对象 (服务端)
+### 2. 实例化组织对象
 ``` typescript
 let org = new Organization(ethUtils, orgContractAddress)
 ```
@@ -96,13 +92,10 @@ let org = new Organization(ethUtils, orgContractAddress)
 只有组织创建者才有权限，合约内有权限验证.  
 通过comunion平台发布token时，token合约会自动调用此方法，不需要再单独调用
 
-- 服务端生成 设置token 交易数据
 ``` typescript
 let setTokenData = await org.genSetTokenData(tokenAddress)
-```
 
-- 客户端 (调用 metamask)
-``` javascript
+// 调起metamask
 var tx = {
     value: '0',
     to: orgAddress, // 组织合约地址
@@ -122,7 +115,6 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 ### 4. 添加并设置成员角色 (可批量)
 如果成员已经存在即修改成员角色； 只有组织创建者才有权限，合约内有权限验证
 
-- 服务端生成 添加成员角色 数据
 ``` typescript
 // role 字符串长度不能超过32字节
 let role1 = ethUtils.web3.utils.fromUtf8("R1")
@@ -131,10 +123,8 @@ let role2 = ethUtils.web3.utils.fromUtf8("R2")
 let members = [addr1, addr2, addr3]
 let roles = [role1, role1, role2]
 let setMembersData = await org.genAddOrUpdateMembersData(members, roles)
-```
 
-- 客户端 (调用 metamask)
-``` javascript
+// 调起metamask
 var tx = {
     value: '0',
     to: orgAddress, // 组织合约地址
@@ -154,14 +144,11 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 
 只有组织创建者才有权限，合约内有权限验证
 
-- 服务端生成 批量删除成员 交易数据
 ``` typescript
 let members = [addr1, addr2]
 let removeMembersData = await org.genRemoveMembersData(members)
-```
 
-- 客户端 (调用 metamask)
-``` javascript
+// 调起metamask
 var tx = {
     value: '0',
     to: orgAddress, // 组织合约地址
@@ -184,14 +171,11 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 
 ### 1. 发布Token
 
-- 服务端生成 deploy 数据
 ``` typescript
 // orgAddress: 组织合约地址,  name: 名称,  symbol: 简称, totalSupply: 初始发行量(单位wei, 数值应该为 发行个数 * decimals)
 let deployData = OrgToken.genDeployData(orgAddress, name, symbol, totalSupply)
-```
 
-- 客户端 (调用 metamask)
-``` javascript
+// 调起metamask
 var tx = {
     value: '0',
     data: deployData
@@ -206,25 +190,22 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 })
 ```
 
-### 2. 实例化OrgToken对象 (服务端)
+### 2. 实例化OrgToken对象
 ``` typescript
 let token = new OrgToken(ethUtils, orgTokenAddress)
 ```
 
 ### 3. 批量额度授权 (授权及添加子账户)
 
-- 服务端生成授权数据
 ``` typescript
 // 需要授权的账号列表
 let spenders = [addr1, addr2, addr3]
 // 授权金额 (单位为wei, 取值应该是 数量*decimals)
 let values = ['10000000000000', '20000000000000', '30000000000000']
 // spenders 与 values 需要按顺序一一对应
-let approveData = token.genApproveExtData(spenders, values)
-```
+let approveData = await token.genApproveExtData(spenders, values)
 
-- 客户端 (调用 metamask)
-``` javascript
+// 调起metamask
 var tx = {
     value: '0',
     to: orgTokenAddress, // OrgToken合约地址
@@ -242,18 +223,15 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 
 ### 4. 批量转账
 
-- 服务端生成转账数据
 ``` typescript
 // 需要转账的账号列表
 let accounts = [addr1, addr2, addr3]
 // 需要转账的金额 (单位为wei, 取值应该是 数量*decimals)
 let amounts = ['10000000000000', '20000000000000', '30000000000000']
 // accounts 与 amounts 需要按顺序一一对应
-let tansferData = token.genTransferExtData(accounts, ammounts)
-```
+let tansferData = await token.genTransferExtData(accounts, ammounts)
 
-- 客户端 (调用 metamask)
-``` javascript
+// 调起metamask
 var tx = {
     value: '0',
     to: orgTokenAddress, // OrgToken合约地址
@@ -271,7 +249,7 @@ web3.eth.sendTransaction(tx, (err, txhash) => {
 
 ## 六、其他
 
-- 查询交易状态 (服务端)
+- 查询交易状态
 ``` typescript
 // 查询交易结果 result.status 为 true 表示交易成功， result.contractAddress 为 发布的合约地址
 let result = await ethUtils.getTransactionReceipt(txhash)

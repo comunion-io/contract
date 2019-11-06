@@ -1,6 +1,6 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import solc from 'solc'
+// import * as fs from 'fs'
+// import * as path from 'path'
+// import solc from 'solc'
 import Web3 from 'web3'
 
 
@@ -25,31 +25,6 @@ class DeployResult {
 
 
 class Utils {
-    static nodeModulesPath(sourceDir: string): string {
-        if (!sourceDir || sourceDir.length <= 1) {
-            return null
-        }
-        let p = path.join(path.dirname(sourceDir), 'node_modules')
-        if (fs.existsSync(p)) {
-            return p
-        } else {
-            return this.nodeModulesPath(path.dirname(sourceDir))
-        }
-    }
-
-    static getImportPath(sourcePath: string, importPath: string) {
-        let filePath = null
-        if (importPath.startsWith('openzeppelin-solidity')) {
-            if (!sourcePath) {
-                sourcePath = __filename
-            }
-            filePath = path.join(this.nodeModulesPath(path.dirname(sourcePath)), importPath)
-        } else {
-            filePath = path.resolve(sourcePath, importPath)
-        }
-        return filePath
-    }
-
     static addHexHeader(hex: string): string {
         if (!hex.toLowerCase().startsWith('0x')) {
             hex = '0x' + hex
@@ -62,75 +37,6 @@ class Utils {
 class EthUtils {
 
     static localWeb3 = new Web3(null)
-
-    private static findImports(importPath: string, sourcePath: string) {
-        try {
-            let filePath = Utils.getImportPath(sourcePath, importPath)
-            if (!filePath) {
-                return { error: 'not found.' }
-            } else {
-                return { contents: fs.readFileSync(filePath).toString() }
-            }
-        } catch (e) {
-            return { error: e.message }
-        }
-    }
-
-    private static getSources(filePath: string, r = {}) {
-        let name = path.basename(filePath)
-        let dir = path.dirname(filePath)
-
-        let lines = String(fs.readFileSync(filePath)).split('\n')
-        lines.forEach(line => {
-            if (line.match(/^import.*?"(.*)"/)) {
-                let p = Utils.getImportPath(filePath, RegExp.$1)
-                this.getSources(p, r)
-            }
-        })
-
-        r[name] = {
-            urls: [filePath]
-        }
-        return r
-    }
-
-    static compileFile(filePath: string, contractName: string = null): CompileResult {
-        var input = {
-            language: 'Solidity',
-            sources: this.getSources(filePath),
-            settings: {
-                outputSelection: {
-                    '*': {
-                        '*': ['*']
-                    }
-                }
-            }
-        }
-        const output = JSON.parse(solc.compile(JSON.stringify(input), this.findImports))
-        if (output.errors) {
-            throw output.errors;
-        }
-
-        let fname = path.basename(filePath)
-        if (!contractName) {
-            contractName = Object.keys(output['contracts'][fname])[0]
-        }
-        const t = output['contracts'][fname][contractName]
-        const abi = t['abi']
-        const byteCode = t['evm']['bytecode']['object']
-        return {
-            output: output,
-            abi: abi,
-            byteCode: byteCode
-        }
-
-    }
-
-    static genDeployData(filePath: string, contractName: string, args: any[]): string {
-        let d = EthUtils.compileFile(filePath, contractName)
-        let c = new EthUtils.localWeb3.eth.Contract(d.abi)
-        return c.deploy({ data: Utils.addHexHeader(d.byteCode), arguments: args }).encodeABI()
-    }
 
     static genDeployDataWithByteCode(abi: any, byteCode: string, args: any[]): string {
         var c = new EthUtils.localWeb3.eth.Contract(abi)
@@ -151,19 +57,6 @@ class EthUtils {
     constructor(rpcHost: string) {
         this.rpcHost = rpcHost
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcHost))
-    }
-
-    async deployFile(account: any, filePath: string, contractName: string, args: any[]): Promise<DeployResult> {
-        let d = EthUtils.compileFile(filePath, contractName)
-        let c = new this.web3.eth.Contract(d.abi)
-        let data = c.deploy({ data: Utils.addHexHeader(d.byteCode), arguments: args }).encodeABI()
-        let sData = await this.signData(account, null, '0', data)
-        let txResult = await this.sendTransaction(sData)
-        let r = new DeployResult()
-        r.compileResult = d
-        r.txResult = txResult
-        r.address = txResult['contractAddress']
-        return r
     }
 
     async deployByteCode(abi: any, byteCode: string, account: any, contractAddress: string, args: any[]): Promise<any> {

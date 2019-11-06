@@ -83,6 +83,10 @@ class OrgToken {
         return EthUtils.genCallData(await this._getAbi(), 'transferOwnership', [newOwner])
     }
 
+    async undefined(_org: string, _name: string, _symbol: string, _totalSupply: string): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'undefined', [_org, _name, _symbol, _totalSupply])
+    }
+
     async genMintData(_to: string, _amount: string) {
         return EthUtils.genCallData(await this._getAbi(), 'mint', [_to, _amount])
     }

@@ -55,6 +55,10 @@ class Organization {
         return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'token', [])
     }
 
+    async undefined(_daos: string, _name: string): Promise<any> {
+        return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'undefined', [_daos, _name])
+    }
+
     async genSetTokenData(_token: string) {
         return EthUtils.genCallData(await this._getAbi(), 'setToken', [_token])
     }
@@ -69,6 +73,10 @@ class Organization {
 
     async getRole(member: string): Promise<any> {
         return await this._ethUtils.call(await this._getAbi(), this._contractAddress, this._contractAddress, '0', 'getRole', [member])
+    }
+
+    async gen_removeMemberData(member: string) {
+        return EthUtils.genCallData(await this._getAbi(), '_removeMember', [member])
     }
 
 
