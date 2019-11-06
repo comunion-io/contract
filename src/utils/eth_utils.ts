@@ -84,8 +84,7 @@ class EthUtils {
             from: from,
             value: value,
             gasPrice: '1500000000',
-            gas: 8000000,
-            chainId: await this.getChainId()
+            gas: 8000000
         })
     }
 
