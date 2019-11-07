@@ -28,6 +28,7 @@ npm install comunion-dao
 
 ``` typescript
 import { EthUtils, Daos, Organization, OrgToken } from 'comunion-dao'
+import Web3 from 'web3'
 
 // 前端web3初始化:
 if (window.ethereum) {
