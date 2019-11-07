@@ -82,6 +82,7 @@ let deployData = Organization.genDeployData(daosAddress, orgName)
 
 // 调起metamask
 var tx = {
+    from: fromAccount,
     value: '0',
     data: deployData
 }
@@ -111,6 +112,7 @@ let setTokenData = await org.genSetTokenData(tokenAddress)
 
 // 调起metamask
 var tx = {
+    from: fromAccount,
     value: '0',
     to: orgAddress, // 组织合约地址
     data: setTokenData
@@ -140,6 +142,7 @@ let setMembersData = await org.genAddOrUpdateMembersData(members, roles)
 
 // 调起metamask
 var tx = {
+    from: fromAccount,
     value: '0',
     to: orgAddress, // 组织合约地址
     data: setMembersData
@@ -164,6 +167,7 @@ let removeMembersData = await org.genRemoveMembersData(members)
 
 // 调起metamask
 var tx = {
+    from: fromAccount,
     value: '0',
     to: orgAddress, // 组织合约地址
     data: removeMembersData
@@ -191,6 +195,7 @@ let deployData = OrgToken.genDeployData(orgAddress, name, symbol, totalSupply)
 
 // 调起metamask
 var tx = {
+    from: fromAccount,
     value: '0',
     data: deployData
 }
@@ -221,6 +226,7 @@ let approveData = await token.genApproveExtData(spenders, values)
 
 // 调起metamask
 var tx = {
+    from: fromAccount,
     value: '0',
     to: orgTokenAddress, // OrgToken合约地址
     data: approveData
@@ -247,6 +253,7 @@ let tansferData = await token.genTransferExtData(accounts, ammounts)
 
 // 调起metamask
 var tx = {
+    from: fromAccount,
     value: '0',
     to: orgTokenAddress, // OrgToken合约地址
     data: tansferData
