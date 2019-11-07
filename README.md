@@ -29,11 +29,25 @@ npm install comunion-dao
 ``` typescript
 import { EthUtils, Daos, Organization, OrgToken } from 'comunion-dao'
 
-// rpcHost: 以太坊rpc请求地址
-let ethUtils = new EthUtils(rpcHost)
+// 前端web3初始化:
+if (window.ethereum) {
+    window.web3 = new Web3(ethereum);
+    try {
+        await ethereum.enable();
+    } catch (error) {
+        // TODO:
+    }
+} else if (window.web3) {
+    window.web3 = new Web3(web3.currentProvider);
+}
+
+// 后端web3初始化
+let web3 = new Web3(rpcUrl)
+
+// EthUtils初始化
+EthUtils.init(web3)
+let ethUtils = new EthUtils()
 ```
-
-
 
 ## 三、Daos 发布
 

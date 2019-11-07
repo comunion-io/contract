@@ -1,12 +1,15 @@
 import fs from 'fs'
 import path from 'path'
+import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import Utils from './utils/utils'
 import { EthUtils, AbiManager, Daos, Organization, OrgToken } from '../../src/index'
 
 
 // let ethUtils = new EthUtils('https://mainnet.infura.io/v3/c7b8db2eba154ed6a4b4689f0c516241', '1')
-let ethUtils = new EthUtils('https://ropsten.infura.io/v3/c7b8db2eba154ed6a4b4689f0c516241')
+let web3 = new Web3('https://ropsten.infura.io/v3/c7b8db2eba154ed6a4b4689f0c516241')
+EthUtils.init(web3)
+let ethUtils = new EthUtils()
 
 let account = ethUtils.web3.eth.accounts.privateKeyToAccount('0x0ba29b28d1753ea0e6740d9451a94df75dbd84af6bdbebc0f0236cccae4f5c01')
 
@@ -56,7 +59,7 @@ async function main() {
     // await deployOrg('0x7284C823ea3AD29bEDfd09Ede1107981E9519896', 'MyOrg2')
     // await deployToken('0xe02167BfdF7c1a7Eef1184de1be4EA8C245b2050', 'MyToken', 'MT', '100000000')
 
-    // daosTest()
+    daosTest()
     // console.log(ethUtils.web3.utils.hexToAscii(await org.getRole('0x7a3e6557ec2b49814115b33362025230ca326a7b')))
 }
 

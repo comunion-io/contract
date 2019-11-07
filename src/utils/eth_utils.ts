@@ -1,6 +1,3 @@
-// import * as fs from 'fs'
-// import * as path from 'path'
-// import solc from 'solc'
 import Web3 from 'web3'
 
 
@@ -36,15 +33,19 @@ class Utils {
 
 class EthUtils {
 
-    static localWeb3 = new Web3(null)
+    static web3 = new Web3(null)
+
+    static init(web3: Web3) {
+        this.web3 = web3
+    }
 
     static genDeployDataWithByteCode(abi: any, byteCode: string, args: any[]): string {
-        var c = new EthUtils.localWeb3.eth.Contract(abi)
+        var c = new EthUtils.web3.eth.Contract(abi)
         return c.deploy({ data: Utils.addHexHeader(byteCode), arguments: args }).encodeABI()
     }
 
     static genCallData(abi: any, method: string, args: any[]): string {
-        var c = new EthUtils.localWeb3.eth.Contract(abi)
+        var c = new EthUtils.web3.eth.Contract(abi)
         let f = Reflect.get(c.methods, method)
         return Reflect.apply(f, c.methods, args).encodeABI()
     }
@@ -54,13 +55,12 @@ class EthUtils {
     web3: Web3
     rpcHost: string
 
-    constructor(rpcHost: string) {
-        this.rpcHost = rpcHost
-        this.web3 = new Web3(new Web3.providers.HttpProvider(this.rpcHost))
+    constructor() {
+        this.web3 = EthUtils.web3
     }
 
     async deployByteCode(abi: any, byteCode: string, account: any, contractAddress: string, args: any[]): Promise<any> {
-        var c = new EthUtils.localWeb3.eth.Contract(abi, contractAddress)
+        var c = new EthUtils.web3.eth.Contract(abi, contractAddress)
         let data = c.deploy({ data: Utils.addHexHeader(byteCode), arguments: args }).encodeABI()
         let sData = await this.signData(account, contractAddress, '0', data)
         return await this.sendTransaction(sData)
@@ -138,7 +138,7 @@ class EthUtils {
         return await this.web3.eth.getBalance(address)
     }
 
-    async getChainId():Promise<number> {
+    async getChainId(): Promise<number> {
         if (this.chainId == null) {
             this.chainId = await this.web3.eth.getChainId()
         }
